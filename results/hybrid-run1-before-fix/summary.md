@@ -1,0 +1,16 @@
+# Evaluation results (hybrid mode)
+
+Run at 2026-11-02 21:34. **7/10 correct in hybrid mode (196.6s total)**
+
+| File | Expected | System | OK | Reasons | Time (s) |
+|---|---|---|---|---|---|
+| supplier-pack-01.pdf | Approve | Needs a person to check | ❌ | [X2] The AI reader and the rule-based parser disagree on price includes VAT (AI: None, parser: False). A person should check which is right. | [R1] Cannot check this reliably because the price includes VAT could not be read with confidence. | 24.57 |
+| supplier-pack-02.pdf | Approve | Needs a person to check | ❌ | [X2] The AI reader and the rule-based parser disagree on price includes VAT (AI: None, parser: False). A person should check which is right. | [R1] Cannot check this reliably because the price includes VAT could not be read with confidence. | 15.95 |
+| supplier-pack-03.pdf | Reject | Needs a person to check | ❌ | [X2] The AI reader and the rule-based parser disagree on price includes VAT (AI: None, parser: False). A person should check which is right. | [R1] Cannot check this reliably because the price includes VAT could not be read with confidence. | 20.48 |
+| supplier-pack-04.pdf | Needs a person to check | Needs a person to check | ✅ | [X2] The AI reader and the rule-based parser disagree on price includes VAT (AI: None, parser: False). A person should check which is right. | [R1] Cannot check this reliably because the price includes VAT could not be read with confidence. | 14.03 |
+| supplier-pack-05.pdf | Reject | Reject | ✅ | [R2] Advance payment is 40%, more than the 20% allowed. | 30.72 |
+| supplier-pack-06.pdf | Reject | Reject | ✅ | [R3] The contract has no late-delivery penalty clause. | 12.08 |
+| supplier-pack-07.pdf | Needs a person to check | Needs a person to check | ✅ | [X2] The AI reader and the rule-based parser disagree on price includes VAT (AI: None, parser: False). A person should check which is right. | [R1] Cannot check this reliably because the price includes VAT could not be read with confidence. | [H2] Quantity 16,500 piece differs from the requested 20,000 by -17.5% (limit ±5%). | 37.9 |
+| supplier-pack-08.pdf | Reject | Reject | ✅ | [R4] Supplier TIN and BIN are missing. | 13.82 |
+| supplier-pack-09.pdf | Needs a person to check | Needs a person to check | ✅ | [X2] The AI reader and the rule-based parser disagree on price includes VAT (AI: None, parser: False). A person should check which is right. | [R1] Cannot check this reliably because the price includes VAT could not be read with confidence. | [H3] Payment terms are unclear: a range of 30 to 90 days instead of a fixed term, and part of it is outside 30 to 60 days. | [H6] Line amount 322,000 should be 50,000 × 6.4 = 320,000 (difference 2,000). | 13.51 |
+| supplier-pack-10.pdf | Reject | Reject | ✅ | [R5] Delivery in 60 days is later than the 45-day limit. | 13.55 |

@@ -1,0 +1,192 @@
+{
+  "document": "supplier-pack-04.pdf",
+  "mode": "ai",
+  "decision": "Needs a person to check",
+  "reasons": [
+    {
+      "rule_id": "H1",
+      "check": "Unit price vs maximum",
+      "severity": "REVIEW",
+      "message": "Unit price 6.65 is 2.31% above the maximum 6.5 (within the 3% band a person must approve).",
+      "evidence": "D Poly bag, 30 x 40 cm 50,000 piece 6.65 332,500.00"
+    }
+  ],
+  "also_flagged": [],
+  "findings": [
+    {
+      "rule_id": "X0",
+      "check": "Extraction verified",
+      "severity": "PASS",
+      "message": "All extracted values are supported by the document text.",
+      "evidence": null
+    },
+    {
+      "rule_id": "M1",
+      "check": "Item matches purchase request",
+      "severity": "PASS",
+      "message": "Item D (Poly bag, 30 x 40 cm) is on purchase request PR-2026-114.",
+      "evidence": "D Poly bag, 30 x 40 cm 50,000 piece 6.65 332,500.00"
+    },
+    {
+      "rule_id": "H1",
+      "check": "Unit price vs maximum",
+      "severity": "REVIEW",
+      "message": "Unit price 6.65 is 2.31% above the maximum 6.5 (within the 3% band a person must approve).",
+      "evidence": "D Poly bag, 30 x 40 cm 50,000 piece 6.65 332,500.00"
+    },
+    {
+      "rule_id": "H2",
+      "check": "Quantity vs request",
+      "severity": "PASS",
+      "message": "Quantity 50,000 matches the requested 50,000.",
+      "evidence": "D Poly bag, 30 x 40 cm 50,000 piece 6.65 332,500.00"
+    },
+    {
+      "rule_id": "R2",
+      "check": "Advance payment",
+      "severity": "PASS",
+      "message": "Advance payment is 10% (limit 20%).",
+      "evidence": "1. Payment. 10% advance payable with the purchase order. Payment within 30 days after delivery."
+    },
+    {
+      "rule_id": "H3",
+      "check": "Payment terms (days after delivery)",
+      "severity": "PASS",
+      "message": "Payment is due 30 days after delivery (allowed: 30 to 60 days).",
+      "evidence": "1. Payment. 10% advance payable with the purchase order. Payment within 30 days after delivery."
+    },
+    {
+      "rule_id": "R3",
+      "check": "Late-delivery penalty",
+      "severity": "PASS",
+      "message": "A late-delivery penalty clause is present.",
+      "evidence": "3. Delay. Late delivery penalty of 0.6% of order value per week."
+    },
+    {
+      "rule_id": "P1",
+      "check": "Penalty size",
+      "severity": "PASS",
+      "message": "Penalty is 0.6% of order value per week (minimum 0.5%).",
+      "evidence": "3. Delay. Late delivery penalty of 0.6% of order value per week."
+    },
+    {
+      "rule_id": "R4",
+      "check": "Supplier TIN and BIN",
+      "severity": "PASS",
+      "message": "TIN 104458043391 and BIN 000470441-0101 are shown.",
+      "evidence": "Supplier TIN: 104458043391 BIN: 000470441-0101"
+    },
+    {
+      "rule_id": "R5",
+      "check": "Delivery time",
+      "severity": "PASS",
+      "message": "Delivery in 28 days (within 30 days).",
+      "evidence": "2. Delivery. Delivery within 28 days of PO."
+    },
+    {
+      "rule_id": "H5",
+      "check": "VAT shown separately at 15%",
+      "severity": "PASS",
+      "message": "VAT is shown separately at 15%.",
+      "evidence": "Subtotal 332,500.00 VAT 15% 49,875.00 Total 382,375.00"
+    },
+    {
+      "rule_id": "H6",
+      "check": "Numbers add up",
+      "severity": "PASS",
+      "message": "Line amounts, subtotal, VAT and total all add up.",
+      "evidence": "Subtotal 332,500.00 VAT 15% 49,875.00 Total 382,375.00"
+    },
+    {
+      "rule_id": "H7",
+      "check": "Quotation validity",
+      "severity": "PASS",
+      "message": "Quotation is valid for 40 days.",
+      "evidence": "4. Validity. This quotation is valid for 40 days from the date above."
+    }
+  ],
+  "extraction": {
+    "supplier_name": "Surma Packaging Industries",
+    "quotation_no": "QT-2026-904",
+    "quotation_date": "2026-10-24",
+    "pr_reference": "PR-2026-114",
+    "line_items": [
+      {
+        "item_code": "D",
+        "description": "Poly bag, 30 x 40 cm",
+        "quantity": 50000.0,
+        "unit": "piece",
+        "unit_price": 6.65,
+        "amount": 332500.0,
+        "price_includes_vat": false,
+        "quote": "D Poly bag, 30 x 40 cm 50,000 piece 6.65 332,500.00"
+      }
+    ],
+    "subtotal": 332500.0,
+    "vat_rate_percent": 15.0,
+    "vat_amount": 49875.0,
+    "total": 382375.0,
+    "totals_quote": "Subtotal 332,500.00 VAT 15% 49,875.00 Total 382,375.00",
+    "tin": "104458043391",
+    "bin": "000470441-0101",
+    "tax_id_quote": "Supplier TIN: 104458043391 BIN: 000470441-0101",
+    "advance_percent": 10.0,
+    "payment_days_min": 30,
+    "payment_days_max": 30,
+    "payment_quote": "1. Payment. 10% advance payable with the purchase order. Payment within 30 days after delivery.",
+    "delivery_days": 28,
+    "delivery_quote": "2. Delivery. Delivery within 28 days of PO.",
+    "penalty_present": true,
+    "penalty_percent_per_week": 0.6,
+    "penalty_basis_order_value": true,
+    "penalty_quote": "3. Delay. Late delivery penalty of 0.6% of order value per week.",
+    "validity_days": 40,
+    "validity_quote": "4. Validity. This quotation is valid for 40 days from the date above.",
+    "reader_notes": []
+  },
+  "uncertain_fields": [],
+  "steps": [
+    {
+      "step": "1. Read document",
+      "status": "ok",
+      "detail": "950 characters of text",
+      "seconds": 0.03
+    },
+    {
+      "step": "2. Extract with AI",
+      "status": "ok",
+      "detail": "model gemini-3.5-flash-lite",
+      "seconds": 2.432
+    },
+    {
+      "step": "3. Extract with parser",
+      "status": "skipped",
+      "detail": "AI-only mode",
+      "seconds": 0.0
+    },
+    {
+      "step": "4. Verify extraction",
+      "status": "ok",
+      "detail": "AI quotes checked against the document",
+      "seconds": 0.0
+    },
+    {
+      "step": "5. Compare with purchase request",
+      "status": "review",
+      "detail": "3 checks",
+      "seconds": 0.0
+    },
+    {
+      "step": "6. Check company rules",
+      "status": "ok",
+      "detail": "9 checks",
+      "seconds": 0.0
+    },
+    {
+      "step": "7. Decide",
+      "status": "Needs a person to check",
+      "detail": "1 reason(s)",
+      "seconds": 0.0
+    }
+  ]
+}

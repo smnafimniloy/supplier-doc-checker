@@ -1,0 +1,246 @@
+{
+  "document": "supplier-pack-08.pdf",
+  "mode": "hybrid",
+  "ai_provider": "groq:openai/gpt-oss-120b",
+  "decision": "Reject",
+  "reasons": [
+    {
+      "rule_id": "R4",
+      "check": "Supplier TIN and BIN",
+      "severity": "REJECT",
+      "message": "Supplier TIN and BIN are missing.",
+      "evidence": "Supplier registration details available on request."
+    }
+  ],
+  "also_flagged": [
+    {
+      "rule_id": "X2",
+      "check": "AI and parser agree",
+      "severity": "REVIEW",
+      "message": "The AI reader and the rule-based parser disagree on penalty basis (order value) (AI: True, parser: False). A person should check which is right.",
+      "evidence": "Delay. Late delivery penalty of 0.5% per week of delay."
+    },
+    {
+      "rule_id": "X2",
+      "check": "AI and parser agree",
+      "severity": "REVIEW",
+      "message": "The AI reader and the rule-based parser disagree on item code (AI: None, parser: 'C'). A person should check which is right.",
+      "evidence": "C Polyester sewing thread, cone 800 cone 205.00 164,000.00"
+    },
+    {
+      "rule_id": "R1",
+      "check": "Unit price vs maximum",
+      "severity": "REVIEW",
+      "message": "Cannot check this reliably because the item code could not be read with confidence.",
+      "evidence": "C Polyester sewing thread, cone 800 cone 205.00 164,000.00"
+    },
+    {
+      "rule_id": "H2",
+      "check": "Quantity vs request",
+      "severity": "REVIEW",
+      "message": "Cannot check this reliably because the item code could not be read with confidence.",
+      "evidence": "C Polyester sewing thread, cone 800 cone 205.00 164,000.00"
+    },
+    {
+      "rule_id": "P1",
+      "check": "Penalty size",
+      "severity": "REVIEW",
+      "message": "Cannot check this reliably because the penalty basis (order value) could not be read with confidence.",
+      "evidence": "Delay. Late delivery penalty of 0.5% per week of delay."
+    }
+  ],
+  "findings": [
+    {
+      "rule_id": "X2",
+      "check": "AI and parser agree",
+      "severity": "REVIEW",
+      "message": "The AI reader and the rule-based parser disagree on penalty basis (order value) (AI: True, parser: False). A person should check which is right.",
+      "evidence": "Delay. Late delivery penalty of 0.5% per week of delay."
+    },
+    {
+      "rule_id": "X2",
+      "check": "AI and parser agree",
+      "severity": "REVIEW",
+      "message": "The AI reader and the rule-based parser disagree on item code (AI: None, parser: 'C'). A person should check which is right.",
+      "evidence": "C Polyester sewing thread, cone 800 cone 205.00 164,000.00"
+    },
+    {
+      "rule_id": "M1",
+      "check": "Item matches purchase request",
+      "severity": "INFO",
+      "message": "No item code on the quote; matched to item C by description.",
+      "evidence": "C Polyester sewing thread, cone 800 cone 205.00 164,000.00"
+    },
+    {
+      "rule_id": "M1",
+      "check": "Item matches purchase request",
+      "severity": "PASS",
+      "message": "Item C (Polyester sewing thread, cone) is on purchase request PR-2026-114.",
+      "evidence": "C Polyester sewing thread, cone 800 cone 205.00 164,000.00"
+    },
+    {
+      "rule_id": "R1",
+      "check": "Unit price vs maximum",
+      "severity": "REVIEW",
+      "message": "Cannot check this reliably because the item code could not be read with confidence.",
+      "evidence": "C Polyester sewing thread, cone 800 cone 205.00 164,000.00"
+    },
+    {
+      "rule_id": "H2",
+      "check": "Quantity vs request",
+      "severity": "REVIEW",
+      "message": "Cannot check this reliably because the item code could not be read with confidence.",
+      "evidence": "C Polyester sewing thread, cone 800 cone 205.00 164,000.00"
+    },
+    {
+      "rule_id": "R2",
+      "check": "Advance payment",
+      "severity": "PASS",
+      "message": "Advance payment is 10% (limit 20%).",
+      "evidence": "Payment. 10% advance payable with the purchase order. Payment within 30 days of delivery."
+    },
+    {
+      "rule_id": "H3",
+      "check": "Payment terms (days after delivery)",
+      "severity": "PASS",
+      "message": "Payment is due 30 days after delivery (allowed: 30 to 60 days).",
+      "evidence": "Payment. 10% advance payable with the purchase order. Payment within 30 days of delivery."
+    },
+    {
+      "rule_id": "R3",
+      "check": "Late-delivery penalty",
+      "severity": "PASS",
+      "message": "A late-delivery penalty clause is present.",
+      "evidence": "Delay. Late delivery penalty of 0.5% per week of delay."
+    },
+    {
+      "rule_id": "P1",
+      "check": "Penalty size",
+      "severity": "REVIEW",
+      "message": "Cannot check this reliably because the penalty basis (order value) could not be read with confidence.",
+      "evidence": "Delay. Late delivery penalty of 0.5% per week of delay."
+    },
+    {
+      "rule_id": "R4",
+      "check": "Supplier TIN and BIN",
+      "severity": "REJECT",
+      "message": "Supplier TIN and BIN are missing.",
+      "evidence": "Supplier registration details available on request."
+    },
+    {
+      "rule_id": "R5",
+      "check": "Delivery time",
+      "severity": "PASS",
+      "message": "Delivery in 18 days (within 30 days).",
+      "evidence": "Delivery. Delivery within 18 days of PO."
+    },
+    {
+      "rule_id": "H5",
+      "check": "VAT shown separately at 15%",
+      "severity": "PASS",
+      "message": "VAT is shown separately at 15%.",
+      "evidence": "Subtotal 164,000.00 VAT 15% 24,600.00 Total 188,600.00"
+    },
+    {
+      "rule_id": "H6",
+      "check": "Numbers add up",
+      "severity": "PASS",
+      "message": "Line amounts, subtotal, VAT and total all add up.",
+      "evidence": "Subtotal 164,000.00 VAT 15% 24,600.00 Total 188,600.00"
+    },
+    {
+      "rule_id": "H7",
+      "check": "Quotation validity",
+      "severity": "PASS",
+      "message": "Quotation is valid for 30 days.",
+      "evidence": "Validity. This quotation is valid for 30 days from the date above."
+    }
+  ],
+  "extraction": {
+    "supplier_name": "Bhairab Thread and Co",
+    "quotation_no": "QT-2026-908",
+    "quotation_date": "2026-10-21",
+    "pr_reference": "PR-2026-114",
+    "line_items": [
+      {
+        "item_code": null,
+        "description": "Polyester sewing thread, cone",
+        "quantity": 800.0,
+        "unit": "cone",
+        "unit_price": 205.0,
+        "amount": 164000.0,
+        "price_includes_vat": false,
+        "quote": "C Polyester sewing thread, cone 800 cone 205.00 164,000.00"
+      }
+    ],
+    "subtotal": 164000.0,
+    "vat_rate_percent": 15.0,
+    "vat_amount": 24600.0,
+    "total": 188600.0,
+    "totals_quote": "Subtotal 164,000.00 VAT 15% 24,600.00 Total 188,600.00",
+    "tin": null,
+    "bin": null,
+    "tax_id_quote": "Supplier registration details available on request.",
+    "advance_percent": 10.0,
+    "payment_days_min": 30,
+    "payment_days_max": 30,
+    "payment_quote": "Payment. 10% advance payable with the purchase order. Payment within 30 days of delivery.",
+    "delivery_days": 18,
+    "delivery_quote": "Delivery. Delivery within 18 days of PO.",
+    "penalty_present": true,
+    "penalty_percent_per_week": 0.5,
+    "penalty_basis_order_value": true,
+    "penalty_quote": "Delay. Late delivery penalty of 0.5% per week of delay.",
+    "validity_days": 30,
+    "validity_quote": "Validity. This quotation is valid for 30 days from the date above.",
+    "reader_notes": []
+  },
+  "uncertain_fields": [
+    "line_items[0].item_code",
+    "penalty_basis_order_value"
+  ],
+  "steps": [
+    {
+      "step": "1. Read document",
+      "status": "ok",
+      "detail": "943 characters of text",
+      "seconds": 0.028
+    },
+    {
+      "step": "2. Extract with AI",
+      "status": "ok",
+      "detail": "read by groq:openai/gpt-oss-120b",
+      "seconds": 21.697
+    },
+    {
+      "step": "3. Extract with parser",
+      "status": "ok",
+      "detail": "1 item line(s)",
+      "seconds": 0.001
+    },
+    {
+      "step": "4. Verify extraction",
+      "status": "uncertain",
+      "detail": "AI and parser compared; uncertain: line_items[0].item_code, penalty_basis_order_value",
+      "seconds": 0.001
+    },
+    {
+      "step": "5. Compare with purchase request",
+      "status": "review",
+      "detail": "4 checks",
+      "seconds": 0.001
+    },
+    {
+      "step": "6. Check company rules",
+      "status": "reject",
+      "detail": "9 checks",
+      "seconds": 0.0
+    },
+    {
+      "step": "7. Decide",
+      "status": "Reject",
+      "detail": "1 reason(s)",
+      "seconds": 0.0
+    }
+  ]
+}

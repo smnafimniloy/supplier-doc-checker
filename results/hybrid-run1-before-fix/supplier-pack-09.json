@@ -1,0 +1,224 @@
+{
+  "document": "supplier-pack-09.pdf",
+  "mode": "hybrid",
+  "decision": "Needs a person to check",
+  "reasons": [
+    {
+      "rule_id": "X2",
+      "check": "AI and parser agree",
+      "severity": "REVIEW",
+      "message": "The AI reader and the rule-based parser disagree on price includes VAT (AI: None, parser: False). A person should check which is right.",
+      "evidence": "D Poly bag, 30 x 40 cm 50,000 piece 6.40 322,000.00"
+    },
+    {
+      "rule_id": "R1",
+      "check": "Unit price vs maximum",
+      "severity": "REVIEW",
+      "message": "Cannot check this reliably because the price includes VAT could not be read with confidence.",
+      "evidence": "D Poly bag, 30 x 40 cm 50,000 piece 6.40 322,000.00"
+    },
+    {
+      "rule_id": "H3",
+      "check": "Payment terms (days after delivery)",
+      "severity": "REVIEW",
+      "message": "Payment terms are unclear: a range of 30 to 90 days instead of a fixed term, and part of it is outside 30 to 60 days.",
+      "evidence": "1. Payment. 5% advance payable with the purchase order. Payment within 30 to 90 days as agreed by both parties."
+    },
+    {
+      "rule_id": "H6",
+      "check": "Numbers add up",
+      "severity": "REVIEW",
+      "message": "Line amount 322,000 should be 50,000 × 6.4 = 320,000 (difference 2,000).",
+      "evidence": "D Poly bag, 30 x 40 cm 50,000 piece 6.40 322,000.00"
+    }
+  ],
+  "also_flagged": [],
+  "findings": [
+    {
+      "rule_id": "X2",
+      "check": "AI and parser agree",
+      "severity": "REVIEW",
+      "message": "The AI reader and the rule-based parser disagree on price includes VAT (AI: None, parser: False). A person should check which is right.",
+      "evidence": "D Poly bag, 30 x 40 cm 50,000 piece 6.40 322,000.00"
+    },
+    {
+      "rule_id": "M1",
+      "check": "Item matches purchase request",
+      "severity": "PASS",
+      "message": "Item D (Poly bag, 30 x 40 cm) is on purchase request PR-2026-114.",
+      "evidence": "D Poly bag, 30 x 40 cm 50,000 piece 6.40 322,000.00"
+    },
+    {
+      "rule_id": "R1",
+      "check": "Unit price vs maximum",
+      "severity": "REVIEW",
+      "message": "Cannot check this reliably because the price includes VAT could not be read with confidence.",
+      "evidence": "D Poly bag, 30 x 40 cm 50,000 piece 6.40 322,000.00"
+    },
+    {
+      "rule_id": "H2",
+      "check": "Quantity vs request",
+      "severity": "PASS",
+      "message": "Quantity 50,000 matches the requested 50,000.",
+      "evidence": "D Poly bag, 30 x 40 cm 50,000 piece 6.40 322,000.00"
+    },
+    {
+      "rule_id": "R2",
+      "check": "Advance payment",
+      "severity": "PASS",
+      "message": "Advance payment is 5% (limit 20%).",
+      "evidence": "1. Payment. 5% advance payable with the purchase order. Payment within 30 to 90 days as agreed by both parties."
+    },
+    {
+      "rule_id": "H3",
+      "check": "Payment terms (days after delivery)",
+      "severity": "REVIEW",
+      "message": "Payment terms are unclear: a range of 30 to 90 days instead of a fixed term, and part of it is outside 30 to 60 days.",
+      "evidence": "1. Payment. 5% advance payable with the purchase order. Payment within 30 to 90 days as agreed by both parties."
+    },
+    {
+      "rule_id": "R3",
+      "check": "Late-delivery penalty",
+      "severity": "PASS",
+      "message": "A late-delivery penalty clause is present.",
+      "evidence": "3. Delay. Late delivery penalty of 0.5% of order value per week."
+    },
+    {
+      "rule_id": "P1",
+      "check": "Penalty size",
+      "severity": "PASS",
+      "message": "Penalty is 0.5% of order value per week (minimum 0.5%).",
+      "evidence": "3. Delay. Late delivery penalty of 0.5% of order value per week."
+    },
+    {
+      "rule_id": "R4",
+      "check": "Supplier TIN and BIN",
+      "severity": "PASS",
+      "message": "TIN 109458093391 and BIN 000970941-0101 are shown.",
+      "evidence": "Supplier TIN: 109458093391 BIN: 000970941-0101"
+    },
+    {
+      "rule_id": "R5",
+      "check": "Delivery time",
+      "severity": "PASS",
+      "message": "Delivery in 28 days (within 30 days).",
+      "evidence": "2. Delivery. Delivery within 4 weeks of PO."
+    },
+    {
+      "rule_id": "H5",
+      "check": "VAT shown separately at 15%",
+      "severity": "PASS",
+      "message": "VAT is shown separately at 15%.",
+      "evidence": "Subtotal 322,000.00 VAT 15% 48,300.00 Total 370,300.00"
+    },
+    {
+      "rule_id": "H6",
+      "check": "Numbers add up",
+      "severity": "REVIEW",
+      "message": "Line amount 322,000 should be 50,000 × 6.4 = 320,000 (difference 2,000).",
+      "evidence": "D Poly bag, 30 x 40 cm 50,000 piece 6.40 322,000.00"
+    },
+    {
+      "rule_id": "H7",
+      "check": "Quotation validity",
+      "severity": "PASS",
+      "message": "Quotation is valid for 30 days.",
+      "evidence": "4. Validity. This quotation is valid for 30 days from the date above."
+    },
+    {
+      "rule_id": "N",
+      "check": "Reader note",
+      "severity": "INFO",
+      "message": "Line item amount calculation mismatch: 50,000 piece at unit price 6.40 BDT equals 320,000.00 BDT, but document states 322,000.00.",
+      "evidence": null
+    }
+  ],
+  "extraction": {
+    "supplier_name": "Dhaleshwari Poly Pack",
+    "quotation_no": "QT-2026-909",
+    "quotation_date": "2026-10-22",
+    "pr_reference": "PR-2026-114",
+    "line_items": [
+      {
+        "item_code": "D",
+        "description": "Poly bag, 30 x 40 cm",
+        "quantity": 50000.0,
+        "unit": "piece",
+        "unit_price": 6.4,
+        "amount": 322000.0,
+        "price_includes_vat": null,
+        "quote": "D Poly bag, 30 x 40 cm 50,000 piece 6.40 322,000.00"
+      }
+    ],
+    "subtotal": 322000.0,
+    "vat_rate_percent": 15.0,
+    "vat_amount": 48300.0,
+    "total": 370300.0,
+    "totals_quote": "Subtotal 322,000.00 VAT 15% 48,300.00 Total 370,300.00",
+    "tin": "109458093391",
+    "bin": "000970941-0101",
+    "tax_id_quote": "Supplier TIN: 109458093391 BIN: 000970941-0101",
+    "advance_percent": 5.0,
+    "payment_days_min": 30,
+    "payment_days_max": 90,
+    "payment_quote": "1. Payment. 5% advance payable with the purchase order. Payment within 30 to 90 days as agreed by both parties.",
+    "delivery_days": 28,
+    "delivery_quote": "2. Delivery. Delivery within 4 weeks of PO.",
+    "penalty_present": true,
+    "penalty_percent_per_week": 0.5,
+    "penalty_basis_order_value": true,
+    "penalty_quote": "3. Delay. Late delivery penalty of 0.5% of order value per week.",
+    "validity_days": 30,
+    "validity_quote": "4. Validity. This quotation is valid for 30 days from the date above.",
+    "reader_notes": [
+      "Line item amount calculation mismatch: 50,000 piece at unit price 6.40 BDT equals 320,000.00 BDT, but document states 322,000.00."
+    ]
+  },
+  "uncertain_fields": [
+    "line_items[0].price_includes_vat"
+  ],
+  "steps": [
+    {
+      "step": "1. Read document",
+      "status": "ok",
+      "detail": "956 characters of text",
+      "seconds": 0.024
+    },
+    {
+      "step": "2. Extract with AI",
+      "status": "ok",
+      "detail": "model gemini-3.5-flash",
+      "seconds": 13.484
+    },
+    {
+      "step": "3. Extract with parser",
+      "status": "ok",
+      "detail": "1 item line(s)",
+      "seconds": 0.0
+    },
+    {
+      "step": "4. Verify extraction",
+      "status": "uncertain",
+      "detail": "AI and parser compared; uncertain: line_items[0].price_includes_vat",
+      "seconds": 0.001
+    },
+    {
+      "step": "5. Compare with purchase request",
+      "status": "review",
+      "detail": "3 checks",
+      "seconds": 0.0
+    },
+    {
+      "step": "6. Check company rules",
+      "status": "review",
+      "detail": "10 checks",
+      "seconds": 0.0
+    },
+    {
+      "step": "7. Decide",
+      "status": "Needs a person to check",
+      "detail": "4 reason(s)",
+      "seconds": 0.0
+    }
+  ]
+}

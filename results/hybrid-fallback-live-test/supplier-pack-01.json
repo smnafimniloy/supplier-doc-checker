@@ -1,0 +1,192 @@
+{
+  "document": "supplier-pack-01.pdf",
+  "mode": "hybrid",
+  "ai_provider": "groq:openai/gpt-oss-120b",
+  "decision": "Approve",
+  "reasons": [],
+  "also_flagged": [],
+  "findings": [
+    {
+      "rule_id": "X5",
+      "check": "AI backup used",
+      "severity": "INFO",
+      "message": "Primary AI failed, so groq:openai/gpt-oss-120b read this document instead (gemini-2.5-flash unavailable (fatal): 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.5-flash is no longer available to new users.). Its output was verified the same way.",
+      "evidence": null
+    },
+    {
+      "rule_id": "X0",
+      "check": "Extraction verified",
+      "severity": "PASS",
+      "message": "All extracted values are supported by the document text and both readers agree.",
+      "evidence": null
+    },
+    {
+      "rule_id": "M1",
+      "check": "Item matches purchase request",
+      "severity": "PASS",
+      "message": "Item A (Cotton twill fabric, 280 gsm) is on purchase request PR-2026-114.",
+      "evidence": "A Cotton twill fabric, 280 gsm 12,000 metre 472.00 5,664,000.00"
+    },
+    {
+      "rule_id": "R1",
+      "check": "Unit price vs maximum",
+      "severity": "PASS",
+      "message": "Unit price 472 is within the maximum 480.",
+      "evidence": "A Cotton twill fabric, 280 gsm 12,000 metre 472.00 5,664,000.00"
+    },
+    {
+      "rule_id": "H2",
+      "check": "Quantity vs request",
+      "severity": "PASS",
+      "message": "Quantity 12,000 matches the requested 12,000.",
+      "evidence": "A Cotton twill fabric, 280 gsm 12,000 metre 472.00 5,664,000.00"
+    },
+    {
+      "rule_id": "R2",
+      "check": "Advance payment",
+      "severity": "PASS",
+      "message": "Advance payment is 10% (limit 20%).",
+      "evidence": "10% advance payable with the purchase order. Balance payable within 45 days after delivery and acceptance of goods."
+    },
+    {
+      "rule_id": "H3",
+      "check": "Payment terms (days after delivery)",
+      "severity": "PASS",
+      "message": "Payment is due 45 days after delivery (allowed: 30 to 60 days).",
+      "evidence": "10% advance payable with the purchase order. Balance payable within 45 days after delivery and acceptance of goods."
+    },
+    {
+      "rule_id": "R3",
+      "check": "Late-delivery penalty",
+      "severity": "PASS",
+      "message": "A late-delivery penalty clause is present.",
+      "evidence": "Late delivery penalty: 1% of order value for each full week of delay."
+    },
+    {
+      "rule_id": "P1",
+      "check": "Penalty size",
+      "severity": "PASS",
+      "message": "Penalty is 1% of order value per week (minimum 0.5%).",
+      "evidence": "Late delivery penalty: 1% of order value for each full week of delay."
+    },
+    {
+      "rule_id": "R4",
+      "check": "Supplier TIN and BIN",
+      "severity": "PASS",
+      "message": "TIN 101458013391 and BIN 000170141-0101 are shown.",
+      "evidence": "Supplier TIN: 101458013391 BIN: 000170141-0101"
+    },
+    {
+      "rule_id": "R5",
+      "check": "Delivery time",
+      "severity": "PASS",
+      "message": "Delivery in 24 days (within 30 days).",
+      "evidence": "Delivery within 24 days of receiving the purchase order."
+    },
+    {
+      "rule_id": "H5",
+      "check": "VAT shown separately at 15%",
+      "severity": "PASS",
+      "message": "VAT is shown separately at 15%.",
+      "evidence": "Subtotal 5,664,000.00 VAT 15% 849,600.00 Total 6,513,600.00"
+    },
+    {
+      "rule_id": "H6",
+      "check": "Numbers add up",
+      "severity": "PASS",
+      "message": "Line amounts, subtotal, VAT and total all add up.",
+      "evidence": "Subtotal 5,664,000.00 VAT 15% 849,600.00 Total 6,513,600.00"
+    },
+    {
+      "rule_id": "H7",
+      "check": "Quotation validity",
+      "severity": "PASS",
+      "message": "Quotation is valid for 45 days.",
+      "evidence": "This quotation is valid for 45 days from the date above."
+    }
+  ],
+  "extraction": {
+    "supplier_name": "Padma Textile Mills Ltd",
+    "quotation_no": "QT-2026-901",
+    "quotation_date": "2026-10-21",
+    "pr_reference": "PR-2026-114",
+    "line_items": [
+      {
+        "item_code": "A",
+        "description": "Cotton twill fabric, 280 gsm",
+        "quantity": 12000.0,
+        "unit": "metre",
+        "unit_price": 472.0,
+        "amount": 5664000.0,
+        "price_includes_vat": false,
+        "quote": "A Cotton twill fabric, 280 gsm 12,000 metre 472.00 5,664,000.00"
+      }
+    ],
+    "subtotal": 5664000.0,
+    "vat_rate_percent": 15.0,
+    "vat_amount": 849600.0,
+    "total": 6513600.0,
+    "totals_quote": "Subtotal 5,664,000.00 VAT 15% 849,600.00 Total 6,513,600.00",
+    "tin": "101458013391",
+    "bin": "000170141-0101",
+    "tax_id_quote": "Supplier TIN: 101458013391 BIN: 000170141-0101",
+    "advance_percent": 10.0,
+    "payment_days_min": 45,
+    "payment_days_max": 45,
+    "payment_quote": "10% advance payable with the purchase order. Balance payable within 45 days after delivery and acceptance of goods.",
+    "delivery_days": 24,
+    "delivery_quote": "Delivery within 24 days of receiving the purchase order.",
+    "penalty_present": true,
+    "penalty_percent_per_week": 1.0,
+    "penalty_basis_order_value": true,
+    "penalty_quote": "Late delivery penalty: 1% of order value for each full week of delay.",
+    "validity_days": 45,
+    "validity_quote": "This quotation is valid for 45 days from the date above.",
+    "reader_notes": []
+  },
+  "uncertain_fields": [],
+  "steps": [
+    {
+      "step": "1. Read document",
+      "status": "ok",
+      "detail": "1034 characters of text",
+      "seconds": 0.01
+    },
+    {
+      "step": "2. Extract with AI",
+      "status": "ok",
+      "detail": "read by groq:openai/gpt-oss-120b (backup: primary AI failed)",
+      "seconds": 22.418
+    },
+    {
+      "step": "3. Extract with parser",
+      "status": "ok",
+      "detail": "1 item line(s)",
+      "seconds": 0.002
+    },
+    {
+      "step": "4. Verify extraction",
+      "status": "ok",
+      "detail": "AI and parser compared",
+      "seconds": 0.001
+    },
+    {
+      "step": "5. Compare with purchase request",
+      "status": "ok",
+      "detail": "3 checks",
+      "seconds": 0.0
+    },
+    {
+      "step": "6. Check company rules",
+      "status": "ok",
+      "detail": "9 checks",
+      "seconds": 0.0
+    },
+    {
+      "step": "7. Decide",
+      "status": "Approve",
+      "detail": "0 reason(s)",
+      "seconds": 0.0
+    }
+  ]
+}

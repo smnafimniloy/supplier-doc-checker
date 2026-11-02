@@ -1,0 +1,231 @@
+{
+  "document": "supplier-pack-10.pdf",
+  "mode": "hybrid",
+  "ai_provider": "groq:openai/gpt-oss-120b",
+  "decision": "Reject",
+  "reasons": [
+    {
+      "rule_id": "R5",
+      "check": "Delivery time",
+      "severity": "REJECT",
+      "message": "Delivery in 60 days is later than the 45-day limit.",
+      "evidence": "Delivery. Delivery within 60 days of PO."
+    }
+  ],
+  "also_flagged": [
+    {
+      "rule_id": "X2",
+      "check": "AI and parser agree",
+      "severity": "REVIEW",
+      "message": "The AI reader and the rule-based parser disagree on item code (AI: None, parser: 'E'). A person should check which is right.",
+      "evidence": "E Carton box, 5-ply 3,000 piece 94.00 282,000.00"
+    },
+    {
+      "rule_id": "R1",
+      "check": "Unit price vs maximum",
+      "severity": "REVIEW",
+      "message": "Cannot check this reliably because the item code could not be read with confidence.",
+      "evidence": "E Carton box, 5-ply 3,000 piece 94.00 282,000.00"
+    },
+    {
+      "rule_id": "H2",
+      "check": "Quantity vs request",
+      "severity": "REVIEW",
+      "message": "Cannot check this reliably because the item code could not be read with confidence.",
+      "evidence": "E Carton box, 5-ply 3,000 piece 94.00 282,000.00"
+    },
+    {
+      "rule_id": "H5",
+      "check": "VAT shown separately at 15%",
+      "severity": "REVIEW",
+      "message": "VAT is not shown as a separate line (prices are VAT-inclusive or VAT is missing).",
+      "evidence": "Total (all taxes included) 282,000.00"
+    }
+  ],
+  "findings": [
+    {
+      "rule_id": "X2",
+      "check": "AI and parser agree",
+      "severity": "REVIEW",
+      "message": "The AI reader and the rule-based parser disagree on item code (AI: None, parser: 'E'). A person should check which is right.",
+      "evidence": "E Carton box, 5-ply 3,000 piece 94.00 282,000.00"
+    },
+    {
+      "rule_id": "M1",
+      "check": "Item matches purchase request",
+      "severity": "INFO",
+      "message": "No item code on the quote; matched to item E by description.",
+      "evidence": "E Carton box, 5-ply 3,000 piece 94.00 282,000.00"
+    },
+    {
+      "rule_id": "M1",
+      "check": "Item matches purchase request",
+      "severity": "PASS",
+      "message": "Item E (Carton box, 5-ply) is on purchase request PR-2026-114.",
+      "evidence": "E Carton box, 5-ply 3,000 piece 94.00 282,000.00"
+    },
+    {
+      "rule_id": "R1",
+      "check": "Unit price vs maximum",
+      "severity": "REVIEW",
+      "message": "Cannot check this reliably because the item code could not be read with confidence.",
+      "evidence": "E Carton box, 5-ply 3,000 piece 94.00 282,000.00"
+    },
+    {
+      "rule_id": "H2",
+      "check": "Quantity vs request",
+      "severity": "REVIEW",
+      "message": "Cannot check this reliably because the item code could not be read with confidence.",
+      "evidence": "E Carton box, 5-ply 3,000 piece 94.00 282,000.00"
+    },
+    {
+      "rule_id": "R2",
+      "check": "Advance payment",
+      "severity": "PASS",
+      "message": "Advance payment is 10% (limit 20%).",
+      "evidence": "Payment. 10% advance payable with the purchase order. Payment within 45 days of delivery."
+    },
+    {
+      "rule_id": "H3",
+      "check": "Payment terms (days after delivery)",
+      "severity": "PASS",
+      "message": "Payment is due 45 days after delivery (allowed: 30 to 60 days).",
+      "evidence": "Payment. 10% advance payable with the purchase order. Payment within 45 days of delivery."
+    },
+    {
+      "rule_id": "R3",
+      "check": "Late-delivery penalty",
+      "severity": "PASS",
+      "message": "A late-delivery penalty clause is present.",
+      "evidence": "Delay. Late delivery penalty of 0.5% of order value per week."
+    },
+    {
+      "rule_id": "P1",
+      "check": "Penalty size",
+      "severity": "PASS",
+      "message": "Penalty is 0.5% of order value per week (minimum 0.5%).",
+      "evidence": "Delay. Late delivery penalty of 0.5% of order value per week."
+    },
+    {
+      "rule_id": "R4",
+      "check": "Supplier TIN and BIN",
+      "severity": "PASS",
+      "message": "TIN 110458103391 and BIN 001071041-0101 are shown.",
+      "evidence": "Supplier TIN: 110458103391 BIN: 001071041-0101"
+    },
+    {
+      "rule_id": "R5",
+      "check": "Delivery time",
+      "severity": "REJECT",
+      "message": "Delivery in 60 days is later than the 45-day limit.",
+      "evidence": "Delivery. Delivery within 60 days of PO."
+    },
+    {
+      "rule_id": "H5",
+      "check": "VAT shown separately at 15%",
+      "severity": "REVIEW",
+      "message": "VAT is not shown as a separate line (prices are VAT-inclusive or VAT is missing).",
+      "evidence": "Total (all taxes included) 282,000.00"
+    },
+    {
+      "rule_id": "H6",
+      "check": "Numbers add up",
+      "severity": "PASS",
+      "message": "Line amounts, subtotal, VAT and total all add up.",
+      "evidence": "Total (all taxes included) 282,000.00"
+    },
+    {
+      "rule_id": "H7",
+      "check": "Quotation validity",
+      "severity": "PASS",
+      "message": "Quotation is valid for 30 days.",
+      "evidence": "Validity. This quotation is valid for 30 days from the date above."
+    }
+  ],
+  "extraction": {
+    "supplier_name": "Kushiyara Box Industries",
+    "quotation_no": "QT-2026-910",
+    "quotation_date": "2026-10-23",
+    "pr_reference": "PR-2026-114",
+    "line_items": [
+      {
+        "item_code": null,
+        "description": "Carton box, 5-ply",
+        "quantity": 3000.0,
+        "unit": "piece",
+        "unit_price": 94.0,
+        "amount": 282000.0,
+        "price_includes_vat": true,
+        "quote": "E Carton box, 5-ply 3,000 piece 94.00 282,000.00"
+      }
+    ],
+    "subtotal": null,
+    "vat_rate_percent": null,
+    "vat_amount": null,
+    "total": 282000.0,
+    "totals_quote": "Total (all taxes included) 282,000.00",
+    "tin": "110458103391",
+    "bin": "001071041-0101",
+    "tax_id_quote": "Supplier TIN: 110458103391 BIN: 001071041-0101",
+    "advance_percent": 10.0,
+    "payment_days_min": 45,
+    "payment_days_max": 45,
+    "payment_quote": "Payment. 10% advance payable with the purchase order. Payment within 45 days of delivery.",
+    "delivery_days": 60,
+    "delivery_quote": "Delivery. Delivery within 60 days of PO.",
+    "penalty_present": true,
+    "penalty_percent_per_week": 0.5,
+    "penalty_basis_order_value": true,
+    "penalty_quote": "Delay. Late delivery penalty of 0.5% of order value per week.",
+    "validity_days": 30,
+    "validity_quote": "Validity. This quotation is valid for 30 days from the date above.",
+    "reader_notes": []
+  },
+  "uncertain_fields": [
+    "line_items[0].item_code"
+  ],
+  "steps": [
+    {
+      "step": "1. Read document",
+      "status": "ok",
+      "detail": "936 characters of text",
+      "seconds": 0.031
+    },
+    {
+      "step": "2. Extract with AI",
+      "status": "ok",
+      "detail": "read by groq:openai/gpt-oss-120b",
+      "seconds": 22.033
+    },
+    {
+      "step": "3. Extract with parser",
+      "status": "ok",
+      "detail": "1 item line(s)",
+      "seconds": 0.0
+    },
+    {
+      "step": "4. Verify extraction",
+      "status": "uncertain",
+      "detail": "AI and parser compared; uncertain: line_items[0].item_code",
+      "seconds": 0.001
+    },
+    {
+      "step": "5. Compare with purchase request",
+      "status": "review",
+      "detail": "4 checks",
+      "seconds": 0.0
+    },
+    {
+      "step": "6. Check company rules",
+      "status": "reject",
+      "detail": "9 checks",
+      "seconds": 0.0
+    },
+    {
+      "step": "7. Decide",
+      "status": "Reject",
+      "detail": "1 reason(s)",
+      "seconds": 0.0
+    }
+  ]
+}

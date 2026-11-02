@@ -1,0 +1,11 @@
+file,supplier,item,expected_decision,main_rules,why
+supplier-pack-01.pdf,Padma Textile Mills Ltd,A,Approve,,"Price 472 <= 480; qty 12,000 matches; 10% advance; 45 days; delivery 24 days; 1% penalty; VAT 15%; totals add up; valid 45 days."
+supplier-pack-02.pdf,Jamuna Trims and Accessories,B,Approve,,"Price 36 <= 38; qty 20,000 matches; no advance; 30 days; delivery 21 days; 0.75% penalty; VAT 15%; totals add up; valid 30 days."
+supplier-pack-03.pdf,Karnaphuli Yarn Traders,C,Reject,R1,"Unit price 229 is 9.05% above the maximum 210 (more than 3%)."
+supplier-pack-04.pdf,Surma Packaging Industries,D,Needs a person to check,H1,"Unit price 6.65 is 2.31% above the maximum 6.50 (above max, but within 3%)."
+supplier-pack-05.pdf,Meghna Carton Works,E,Reject,R2,"40% advance payment is more than the 20% limit."
+supplier-pack-06.pdf,Teesta Fabrics Ltd,A,Reject,R3,"No late-delivery penalty clause in the terms."
+supplier-pack-07.pdf,Rupsha Zipper Factory,B,Needs a person to check,H2,"Quantity 16,500 is 17.5% less than the 20,000 requested (more than 5%)."
+supplier-pack-08.pdf,Bhairab Thread and Co,C,Reject,R4,"TIN and BIN are missing ('Supplier registration details available on request')."
+supplier-pack-09.pdf,Dhaleshwari Poly Pack,D,Needs a person to check,H3;H6,"Payment '30 to 90 days as agreed' is unclear and partly outside 30-60 days; line amount 322,000 should be 50,000 x 6.40 = 320,000."
+supplier-pack-10.pdf,Kushiyara Box Industries,E,Reject,R5,"Delivery in 60 days is later than 45 days. (Also: VAT not shown separately - H5.)"
