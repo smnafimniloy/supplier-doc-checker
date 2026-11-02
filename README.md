@@ -35,7 +35,7 @@ is too old for LangGraph; if that's what you have, use the `uv` option below (it
 project only).
 
 ```bash
-git clone <this-repo> && cd supplier-doc-checker
+git clone https://github.com/smnafimniloy/supplier-doc-checker.git && cd supplier-doc-checker
 
 # 1. Create an isolated environment (nothing is installed globally)
 python3 -m venv .venv                       # needs Python 3.10+
