@@ -17,14 +17,14 @@ The first load can take ~30 s if the free host has put the app to sleep.
 
 ## Contents
 - [Quick start](#quick-start)
-- [How it works](#how-it-works)
+- [How it works](#how-it-works) (with [a worked example](#how-a-decision-is-made-a-worked-example))
 - [Results](#results)
 - [Running it](#running-it)
 - [Project structure](#project-structure)
 - [Design choices](#design-choices)
 - Further docs: [Architecture](docs/ARCHITECTURE.md) · [Rules & assumptions](docs/RULES_AND_ASSUMPTIONS.md) ·
-  [Testing](docs/TESTING.md) · [Evaluation log](docs/EVALUATION_LOG.md) · [One-page note](NOTE.md) ·
-  [How I used AI tools](docs/AI_TOOLS_USED.md)
+  [Testing](docs/TESTING.md) · [Manual testing guide](docs/MANUAL_TESTING.md) · [Evaluation log](docs/EVALUATION_LOG.md) ·
+  [One-page note](NOTE.md) · [How I used AI tools](docs/AI_TOOLS_USED.md)
 
 ---
 
@@ -96,6 +96,24 @@ flowchart LR
 **Decision order:** any Reject rule → **Reject**; otherwise any person-check rule → **Needs a person to check**;
 otherwise → **Approve**. Every reason cites its rule ID (from `company-rules.md`) and the supporting quote.
 
+### How a decision is made: a worked example
+
+The AI model never makes the decision. It is the *reader*, not the judge. Here is pack 04 (Surma Packaging):
+
+1. **The AI copies out facts, each with its source sentence.** Item D, quantity 50,000, unit price 6.65,
+   advance 10%, payment 30 days, delivery 28 days, penalty 0.6% of order value per week, valid 40 days,
+   TIN and BIN present. Price quote: *"D Poly bag, 30 x 40 cm 50,000 piece 6.65 332,500.00"*.
+2. **The parser reads the same PDF independently** and gets the same values. The quote is found in the
+   PDF, so the facts are trusted.
+3. **Python applies each rule.** The price check: the maximum for item D is 6.50, and
+   (6.65 − 6.50) / 6.50 = **2.31%** over. That is not more than 3%, so it is not a Reject (R1), but it is above 0%,
+   so it is **H1: Needs a person**. Every other rule passes.
+4. **Python decides in a fixed order:** no Reject rule fired, and one person-check rule did, so the answer
+   is **Needs a person to check**: *"Unit price 6.65 is 2.31% above the maximum 6.5"*, with the quote.
+
+Because the decision is plain code, the same document always gets the same answer, every answer can be
+traced to a rule and a quote, and changing a limit is a one-line edit in `config.py`.
+
 ---
 
 ## Results
@@ -150,6 +168,12 @@ streamlit run app.py
 python -m pytest -q        # 69 tests, offline, no API key needed
 ```
 
+### Manual testing
+[docs/MANUAL_TESTING.md](docs/MANUAL_TESTING.md) is a 20–30 minute hands-on checklist. It covers every
+pack's expected decision in the app, and "try to break it" tests: a fake PDF, both AIs down, Gemini down so
+Groq takes over, and running with no API keys. It also has a live-change drill (change a limit, watch the
+tests catch it, undo it).
+
 ### Reading modes
 | Mode | Readers | When to use |
 |---|---|---|
@@ -158,9 +182,11 @@ python -m pytest -q        # 69 tests, offline, no API key needed
 | `parser` (default without key) | Rule-based parser only | Offline / no key / reproducible baseline |
 
 ### Deploying (free working link)
+Live at **https://supplier-doc-checker.streamlit.app/**. To deploy your own copy:
 1. Push this repo to GitHub.
-2. On [share.streamlit.io](https://share.streamlit.io) → *New app* → pick the repo, main file `app.py`.
-3. Under *Advanced settings → Secrets* add `GEMINI_API_KEY = "your-key"` (and optionally `GROQ_API_KEY`).
+2. On [share.streamlit.io](https://share.streamlit.io) → *Create app* → pick the repo, main file `app.py`.
+3. Under *Advanced settings*: Python **3.12**, and in *Secrets* add `GEMINI_API_KEY = "your-key"`
+   (and optionally `GROQ_API_KEY`). Without secrets, the demo runs in parser-only mode.
 
 ---
 
@@ -182,7 +208,7 @@ supplier-doc-checker/
 ├── tests/test_pipeline.py        # 69 offline tests
 ├── data/                         # Sample files from BIAI + expected-decisions.csv
 ├── results/                      # Saved evaluation outputs per mode
-├── docs/                         # Architecture, rules, testing, evaluation log, AI-tool log
+├── docs/                         # Architecture, rules, testing, manual testing, evaluation log, AI-tool log
 └── NOTE.md                       # One-page note
 ```
 

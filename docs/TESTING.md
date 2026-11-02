@@ -51,7 +51,23 @@ python -m supplier_checker.cli evaluate --mode parser
 Each run writes `results/<mode>/summary.md`, `summary.csv` and one JSON per document (all findings,
 extracted fields, quotes, step timings).
 
-## 4. Limits of this testing (honest)
+## 4. Manual testing
+
+[MANUAL_TESTING.md](MANUAL_TESTING.md) is a step-by-step checklist for people, not code. It covers:
+- each pack's decision and reason in the app;
+- the "never guess" paths, run by hand.
+
+The never-guess results were confirmed by running them:
+
+| Manual test | Result |
+|---|---|
+| Fake (non-PDF) file | Needs a person, X4; no crash |
+| Both AIs pointed at a non-existent model | Pack 01 (normally Approve) → Needs a person, X3; ≈3.5 s, no pointless retries |
+| Gemini broken, Groq working | Groq reads it ("backup: primary AI failed"), X5 shown, still Approve |
+| AI-only mode, no AI available | Needs a person (X3 only); rule steps skipped |
+| Live change: advance limit 20% → 50% | Pack 05 flips to Approve and **4 tests fail**, showing the tests guard the rules; undo → 69 pass |
+
+## 5. Limits of this testing (honest)
 - 10 samples, all from the same template. 10/10 on these does **not** prove the system handles other layouts.
   The parser in particular was written while looking at these files.
 - The ground truth is my reading of the rules. Where the rules are ambiguous, my choice is documented in
