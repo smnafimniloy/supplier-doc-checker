@@ -2,15 +2,13 @@
 from __future__ import annotations
 
 import csv
-import json
 import os
-from datetime import datetime
 
 import pandas as pd
 import streamlit as st
 from dotenv import load_dotenv
 
-from supplier_checker import ai_reader, config
+from supplier_checker import ai_reader, config, reviews
 from supplier_checker.graph import check_document
 from supplier_checker.schemas import Decision, Severity
 
@@ -31,7 +29,36 @@ BADGE = {
     Decision.REVIEW: ("🧑‍💼 Needs a person to check", "orange"),
 }
 SEV_ICON = {Severity.PASS: "✅", Severity.REJECT: "⛔", Severity.REVIEW: "🟠", Severity.INFO: "ℹ️"}
-REVIEW_LOG = config.RESULTS_DIR / "review_log.jsonl"
+
+def remember(state: dict) -> None:
+    """Keep every checked document for the Decisions tab (latest result per file)."""
+    st.session_state.setdefault("checked", {})[state["document_name"]] = state
+
+
+def review_form(state: dict, key: str, fd: "reviews.FinalDecision") -> None:
+    """Form for a person to decide (or change their decision on) a 'Needs a person' document."""
+    title = "Change the review" if fd.by_person else "Review this document"
+    with st.form(key):
+        st.markdown(f"**{title}**: the system stopped here and needs a person's decision.")
+        c1, c2 = st.columns([1, 2])
+        name = c1.text_input("Your name", key=f"{key}-name")
+        choice = c2.radio("Decision", ["Approve", "Reject"], horizontal=True, key=f"{key}-choice")
+        note = st.text_input("Note (why)", key=f"{key}-note")
+        if st.form_submit_button("Save review"):
+            try:
+                reviews.add_review(state["document_name"], state["decision"], reviews.Decision(choice), name, note)
+            except ValueError as exc:
+                st.error(str(exc))
+            else:
+                st.rerun()
+
+
+def decided_line(fd: "reviews.FinalDecision") -> str:
+    if not fd.by_person:
+        return "Decided by the system"
+    r = fd.review
+    note = f' · "{r.note}"' if r.note else ""
+    return f"Decided by **{r.reviewer_name}** on {r.time.replace('T', ' ')} · system said: {fd.system.value}{note}"
 
 
 # ----------------------------------------------------------------------------- sidebar
@@ -69,7 +96,14 @@ def show_result(state: dict, key_prefix: str) -> None:
     decision = state["decision"]
     label, colour = BADGE[decision]
     ex = state.get("extraction")
-    st.markdown(f"### :{colour}[{label}]")
+    fd = reviews.final_decision(state["document_name"], decision, reviews.load_reviews())
+    if fd.by_person:
+        f_label, f_colour = BADGE[fd.decision]
+        st.markdown(f"### :{f_colour}[{f_label}] (final, by a person)")
+        st.info(decided_line(fd))
+        st.markdown(f"System decision: :{colour}[{label}]")
+    else:
+        st.markdown(f"### :{colour}[{label}]")
     if state.get("ai_provider"):
         st.caption(f"Read by: `{state['ai_provider']}`")
 
@@ -118,17 +152,7 @@ def show_result(state: dict, key_prefix: str) -> None:
             hide_index=True, width="stretch")
 
     if decision == Decision.REVIEW:
-        with st.form(f"{key_prefix}-review"):
-            st.markdown("**Human review** — the system stopped here. Record the reviewer's decision:")
-            human = st.radio("Decision", ["Approve", "Reject"], horizontal=True)
-            note = st.text_input("Note")
-            if st.form_submit_button("Save review"):
-                config.RESULTS_DIR.mkdir(exist_ok=True)
-                with open(REVIEW_LOG, "a", encoding="utf-8") as fh:
-                    fh.write(json.dumps({"time": datetime.now().isoformat(timespec="seconds"),
-                                         "document": state["document_name"], "system": decision.value,
-                                         "reviewer": human, "note": note}) + "\n")
-                st.success(f"Saved to {REVIEW_LOG.relative_to(config.PROJECT_ROOT)}")
+        review_form(state, f"{key_prefix}-review", fd)
 
 
 # ----------------------------------------------------------------------------- main
@@ -136,7 +160,7 @@ st.title("📄 Supplier Document Checker")
 st.caption("Aamar Garments Ltd (fictional) · Checks supplier quotations step by step against the purchase "
            "request and company rules. When unsure, it stops and asks a person.")
 
-tab_all, tab_one = st.tabs(["Check all 10 samples", "Check one document"])
+tab_all, tab_one, tab_board = st.tabs(["Check all 10 samples", "Check one document", "Decisions"])
 
 with tab_all:
     expected = {r["file"]: r for r in csv.DictReader(open(config.EXPECTED_CSV, encoding="utf-8"))}
@@ -144,6 +168,7 @@ with tab_all:
         results, progress = {}, st.progress(0.0)
         for i, name in enumerate(expected):
             results[name] = check_document(config.DATA_DIR / name, mode=mode)
+            remember(results[name])
             progress.progress((i + 1) / len(expected), text=f"Checked {name}")
         st.session_state["batch"] = (mode, results)
 
@@ -155,9 +180,13 @@ with tab_all:
         for col, d in zip((m2, m3, m4), Decision):
             col.metric(BADGE[d][0], sum(r["decision"] == d for r in results.values()))
         st.caption(f"Mode: {run_mode}")
+        history = reviews.load_reviews()
+        finals = {n: reviews.final_decision(n, r["decision"], history) for n, r in results.items()}
         st.dataframe(pd.DataFrame([{
             "File": n, "Supplier": (r["extraction"].supplier_name if r.get("extraction") else "-"),
             "System decision": BADGE[r["decision"]][0],
+            "Final decision": BADGE[finals[n].decision][0],
+            "Decided by": finals[n].decided_by,
             "Expected": expected[n]["expected_decision"],
             "Match": "✅" if r["decision"].value == expected[n]["expected_decision"] else "❌",
             "Main reason": "; ".join(f"[{x.rule_id}] {x.message}" for x in r["reasons"]) or "All checks passed",
@@ -173,5 +202,55 @@ with tab_one:
             st.session_state["single"] = check_document(upload, name=upload.name, mode=mode)
         else:
             st.session_state["single"] = check_document(config.DATA_DIR / choice, mode=mode)
+        remember(st.session_state["single"])
     if "single" in st.session_state:
         show_result(st.session_state["single"], "single")
+
+with tab_board:
+    checked: dict = st.session_state.get("checked", {})
+    history = reviews.load_reviews()
+    st.markdown("Every checked document, sorted by its **final** decision: the reviewer's decision when a "
+                "person has reviewed it, otherwise the system's.")
+    if not checked:
+        st.info("No documents checked yet in this session. Run **Check all 10 samples** or **Check one "
+                "document** first. Past reviews are still listed in the history below.")
+    else:
+        finals = {n: reviews.final_decision(n, s["decision"], history) for n, s in checked.items()}
+        groups = {d: [n for n in checked if finals[n].decision == d] for d in Decision}
+        cols = st.columns(3)
+        for col, d in zip(cols, (Decision.APPROVE, Decision.REJECT, Decision.REVIEW)):
+            with col:
+                label, colour = BADGE[d]
+                title = "Needs a person" if d == Decision.REVIEW else label
+                st.markdown(f"#### :{colour}[{title}] ({len(groups[d])})")
+                if not groups[d]:
+                    st.caption("None")
+                for n in groups[d]:
+                    state, fd = checked[n], finals[n]
+                    ex = state.get("extraction")
+                    with st.container(border=True):
+                        st.markdown(f"**{n}**  \n{ex.supplier_name if ex else ''}")
+                        if fd.by_person:
+                            st.caption(f"👤 {decided_line(fd)}")
+                        else:
+                            st.caption("🤖 Decided by the system")
+                            if state["reasons"]:
+                                r = state["reasons"][0]
+                                st.caption(f"[{r.rule_id}] {r.message}")
+                        if state["decision"] == Decision.REVIEW:
+                            with st.expander("Change review" if fd.by_person else "Review now"):
+                                review_form(state, f"board-{n}", fd)
+
+    st.divider()
+    st.markdown(f"#### Review history ({len(history)})")
+    if history:
+        st.caption("Every review ever saved, newest first. Nothing is overwritten: a changed decision is a "
+                   "new row, and the latest one counts.")
+        st.dataframe(pd.DataFrame([{
+            "Time": r.time.replace("T", " "), "Document": r.document, "Reviewer": r.reviewer_name,
+            "Decision": BADGE[r.decision][0], "System had said": r.system, "Note": r.note,
+        } for r in reversed(history)]), hide_index=True, width="stretch")
+    else:
+        st.caption("No reviews yet.")
+    st.caption(f"Saved in `{reviews.REVIEW_LOG.relative_to(config.PROJECT_ROOT)}`. On the free online demo "
+               "this file is reset whenever the app restarts.")

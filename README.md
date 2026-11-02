@@ -161,11 +161,19 @@ streamlit run app.py
 ```
 - **Check all 10 samples** — runs the batch, shows the score and a table, and lets you inspect any document.
 - **Check one document** — pick a sample or upload your own PDF.
-- For *Needs a person to check* results, a reviewer can record their decision (saved to `results/review_log.jsonl`).
+- **Decisions** tab: every checked document sorted into **✅ Approved, ⛔ Rejected and 🧑‍💼 Needs a person**, by its
+  *final* decision. A person reviews "Needs a person" documents right there (name, Approve/Reject, note). The
+  reviewer's decision then becomes final, and the card shows **who decided, when, what the system had said, and
+  why**. A **review history** lists every review ever saved. Nothing is overwritten, so a changed decision is a
+  new row, and the latest one counts.
+- A review only applies to the system result it was made for. If a document is re-checked and the system now
+  answers differently, the old review stays in the history but doesn't override the new result.
+- Reviews are saved in `results/review_log.jsonl`. On the free online demo that file is reset whenever the app
+  restarts; a real deployment would use a database.
 
 ### Tests
 ```bash
-python -m pytest -q        # 69 tests, offline, no API key needed
+python -m pytest -q        # 75 tests, offline, no API key needed
 ```
 
 ### Manual testing
@@ -202,10 +210,11 @@ supplier-doc-checker/
 │   ├── parser_reader.py          # Reader 2: rule-based parser (independent cross-check)
 │   ├── verify.py                 # Grounding (quotes exist) + agreement (AI vs parser)
 │   ├── rules.py                  # Purchase-request comparison, company rules, decision
+│   ├── reviews.py                # Human review: history log + final decision (person overrides 'Needs a person')
 │   ├── schemas.py                # Pydantic models: Extraction, Finding, Decision
 │   ├── config.py                 # Every threshold from company-rules.md, in one place
 │   └── cli.py                    # check / evaluate commands
-├── tests/test_pipeline.py        # 69 offline tests
+├── tests/test_pipeline.py        # 75 offline tests
 ├── data/                         # Sample files from BIAI + expected-decisions.csv
 ├── results/                      # Saved evaluation outputs per mode
 ├── docs/                         # Architecture, rules, testing, manual testing, evaluation log, AI-tool log

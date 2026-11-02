@@ -23,7 +23,7 @@ The brief says: "Use any AI tools you like … We want to see how you use them."
    - All dependencies in a project virtual environment, nothing installed globally.
 4. **Architecture.** "AI reads, Python decides", plus a second independent reader, was a deliberate design so
    that AI mistakes become visible *Needs a person* results rather than wrong answers.
-5. **Verification.** Every generated module was run against the samples and covered by tests (69 offline
+5. **Verification.** Every generated module was run against the samples and covered by tests (75 offline
    tests), including tests that simulate AI hallucinations and outages.
 6. **Live runs found what tests missed.** Two bugs only appeared against the real Gemini API: a null-vs-false
    false alarm, and rules running on empty data during a quota outage. Both were fixed with regression

@@ -289,3 +289,59 @@ def test_error_classification(message, kind):
 def test_rate_limit_wait_uses_the_providers_retry_after():
     kind, wait = ai_reader._classify(RuntimeError("Rate limit reached (TPM). Please try again in 7.5s."))
     assert kind == "rate" and 8 <= wait <= 9
+
+
+# ----------------------------------------------------------------------------- human review
+from datetime import datetime as _dt  # noqa: E402
+
+from supplier_checker import reviews  # noqa: E402
+
+REVIEW = Decision.REVIEW
+
+
+def test_unreviewed_document_keeps_system_decision(tmp_path):
+    fd = reviews.final_decision("supplier-pack-04.pdf", REVIEW, reviews.load_reviews(tmp_path / "log.jsonl"))
+    assert fd.decision == REVIEW and fd.decided_by == "system" and not fd.by_person
+
+
+def test_reviewer_decision_becomes_final_and_is_attributed(tmp_path):
+    log = tmp_path / "log.jsonl"
+    reviews.add_review("supplier-pack-04.pdf", REVIEW, Decision.APPROVE, "Rahim", "2.3% over is fine", path=log)
+    fd = reviews.final_decision("supplier-pack-04.pdf", REVIEW, reviews.load_reviews(log))
+    assert fd.decision == Decision.APPROVE and fd.decided_by == "Rahim" and fd.system == REVIEW
+    assert fd.review.note == "2.3% over is fine"
+
+
+def test_changed_review_keeps_history_and_latest_wins(tmp_path):
+    log = tmp_path / "log.jsonl"
+    reviews.add_review("supplier-pack-09.pdf", REVIEW, Decision.APPROVE, "Rahim", path=log, now=_dt(2026, 11, 3, 9))
+    reviews.add_review("supplier-pack-09.pdf", REVIEW, Decision.REJECT, "Karim", "line total wrong", path=log,
+                       now=_dt(2026, 11, 3, 10))
+    history = reviews.load_reviews(log)
+    assert len(history) == 2                                   # nothing is overwritten
+    fd = reviews.final_decision("supplier-pack-09.pdf", REVIEW, history)
+    assert fd.decision == Decision.REJECT and fd.decided_by == "Karim"
+
+
+def test_review_does_not_override_a_different_system_result(tmp_path):
+    """A review made when the system said 'Needs a person' must not silently override a later
+    re-check where the system says Reject: new evidence needs a new review."""
+    log = tmp_path / "log.jsonl"
+    reviews.add_review("supplier-pack-04.pdf", REVIEW, Decision.APPROVE, "Rahim", path=log)
+    fd = reviews.final_decision("supplier-pack-04.pdf", Decision.REJECT, reviews.load_reviews(log))
+    assert fd.decision == Decision.REJECT and fd.decided_by == "system"
+
+
+def test_review_requires_name_and_a_real_decision(tmp_path):
+    with pytest.raises(ValueError):
+        reviews.add_review("x.pdf", REVIEW, Decision.APPROVE, "   ", path=tmp_path / "l.jsonl")
+    with pytest.raises(ValueError):
+        reviews.add_review("x.pdf", REVIEW, Decision.REVIEW, "Rahim", path=tmp_path / "l.jsonl")
+
+
+def test_old_or_broken_log_lines_do_not_crash(tmp_path):
+    log = tmp_path / "log.jsonl"
+    log.write_text('{"time":"2026-11-02T21:00:00","document":"a.pdf","system":"Needs a person to check",'
+                   '"reviewer":"Approve","note":""}\nnot json\n', encoding="utf-8")
+    history = reviews.load_reviews(log)
+    assert len(history) == 1 and history[0].reviewer_name == "unknown"

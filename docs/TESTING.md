@@ -19,7 +19,7 @@ Before writing any code, I read all 10 packs and applied `company-rules.md` by h
 
 Split: 2 Approve, 5 Reject, 3 Needs a person.
 
-## 2. Automated tests (`tests/test_pipeline.py`, 69 tests, offline)
+## 2. Automated tests (`tests/test_pipeline.py`, 75 tests, offline)
 
 ```bash
 python -m pytest -q
@@ -32,6 +32,7 @@ python -m pytest -q
 | AI failure | Hybrid: if Gemini is down, the document is never approved → person (X3). AI-only: if nothing is extracted, **no rule runs** → person (regression test from live run 4) |
 | Backup AI | Gemini down → Groq reads it → same result, provider recorded (X5). All AIs down → person |
 | Error handling | Daily vs per-minute quota, retry-after parsing ("try again in 7.5s"), fatal 404 → no retry |
+| Human review | Unreviewed doc keeps the system decision; a review becomes final and is attributed; a changed review keeps history and the latest wins; a review made for a different system result doesn't apply; empty names and invalid decisions are refused; old or broken log lines don't crash |
 | AI null-vs-false flags | Gemini's `null` for "price includes VAT" is not a fake disagreement (regression test from live run 1) |
 | Unreadable PDF | Corrupt/scanned file → person (X4), no crash |
 | Parser | Weeks → days, ranges, missing TIN/BIN stays empty, VAT-inclusive detected |
@@ -65,7 +66,7 @@ The never-guess results were confirmed by running them:
 | Both AIs pointed at a non-existent model | Pack 01 (normally Approve) → Needs a person, X3; ≈3.5 s, no pointless retries |
 | Gemini broken, Groq working | Groq reads it ("backup: primary AI failed"), X5 shown, still Approve |
 | AI-only mode, no AI available | Needs a person (X3 only); rule steps skipped |
-| Live change: advance limit 20% → 50% | Pack 05 flips to Approve and **4 tests fail**, showing the tests guard the rules; undo → 69 pass |
+| Live change: advance limit 20% → 50% | Pack 05 flips to Approve and **4 tests fail**, showing the tests guard the rules; undo → all tests pass |
 
 ## 5. Limits of this testing (honest)
 - 10 samples, all from the same template. 10/10 on these does **not** prove the system handles other layouts.

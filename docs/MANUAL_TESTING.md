@@ -23,7 +23,7 @@ source .venv/bin/activate          # your prompt now starts with (.venv)
 
 | # | Run | Expected | ✓ |
 |---|---|---|---|
-| 1.1 | `python -m pytest -q` | `69 passed` | [ ] |
+| 1.1 | `python -m pytest -q` | `75 passed` | [ ] |
 | 1.2 | `python -m supplier_checker.cli evaluate --mode parser` | `RESULT: 10/10 correct in parser mode` | [ ] |
 | 1.3 | `python -m supplier_checker.cli evaluate` | `RESULT: 10/10 correct in hybrid mode` (about 30 s; uses AI quota) | [ ] |
 
@@ -69,13 +69,27 @@ For each pack, check the decision **and** that the reason quotes the PDF.
 - [ ] **Extracted from the document** table: supplier, item D, 50,000 × 6.4, TIN/BIN, payment 30–90, delivery 28 days
 - [ ] **Pipeline steps** lists 7 steps with timings
 - [ ] **Full checklist** expander: every rule shown, with ✅ / 🟠 / ⛔ icons and quotes
-- [ ] **Human review** form: choose Approve, write a note, click **Save review** → "Saved to results/review_log.jsonl"
+- [ ] **Review this document** form at the bottom: name, decision and note (see 2.6 for the full review test)
 
 ### 2.5 Check one document tab
 - [ ] Pick **supplier-pack-05.pdf** → **Check document** → Reject (R2)
 - [ ] Upload a PDF from `data/` (e.g. `supplier-pack-03.pdf`) → Reject (R1)
 
-### 2.6 Parser-only mode
+### 2.6 Decisions tab and human review
+Open the **Decisions** tab (after Run all 10).
+- [ ] Three sections: **✅ Approve (2)**, **⛔ Reject (5)**, **Needs a person (3)**
+- [ ] Each card says **🤖 Decided by the system**, with the main reason
+- [ ] On **supplier-pack-04.pdf** → **Review now** → name `Rahim`, **Approve**, note `ok this month` → **Save review**
+  - [ ] Pack 04 moves to **Approve (3)**, and Needs a person drops to **(2)**
+  - [ ] Its card shows **👤 Decided by Rahim on <date time> · system said: Needs a person to check · "ok this month"**
+- [ ] Same card → **Change review** → name `Karim`, **Reject**, note `budget is strict` → **Save review**
+  - [ ] Pack 04 moves to **Reject**, credited to Karim
+  - [ ] **Review history** shows **both** rows (Karim's on top). Nothing was overwritten.
+- [ ] Try saving with an empty name → error "Enter the reviewer's name.", and nothing is saved
+- [ ] **Check all 10 samples** tab: the table now has **Final decision** and **Decided by** columns
+- [ ] Inspect pack 04 there: the heading says **⛔ Reject (final, by a person)**, with Karim's details
+
+### 2.7 Parser-only mode
 - [ ] Sidebar → **Parser only** → Run all 10 again: still **10 / 10**, almost instantly
 - [ ] Open pack 01: **Read by** is not shown (no AI was used)
 
@@ -144,7 +158,7 @@ Make a change, see its effect, then undo it.
    - [ ] **Some tests fail** (`test_advance`, and pack 05's end-to-end tests). The tests catch the change.
 4. Undo: `git checkout supplier_checker/config.py`
 5. `python -m pytest -q`
-   - [ ] Back to **69 passed**
+   - [ ] Back to **75 passed**
 
 ---
 

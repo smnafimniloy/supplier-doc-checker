@@ -77,6 +77,22 @@ evaluate. This one helper is what stops an uncertain reading from ever producing
 Decision precedence (`decide`): REJECT > REVIEW > APPROVE, matching `company-rules.md` ("Needs a person …
 if nothing above applies").
 
+## Human review (`reviews.py`)
+The pipeline's answer is the **system decision**. When it is *Needs a person to check*, a reviewer records
+Approve or Reject, with their name and a note, in the app. Each review is appended to
+`results/review_log.jsonl` and never edited, so the history of who decided what (including changes of mind)
+is kept.
+
+`final_decision(document, system_decision, reviews)` gives each document's final answer:
+- no review → the system decision, "decided by system";
+- reviewed → the **latest** review for that document, attributed to the reviewer;
+- a review only counts for the **same system result** it was made for. If a re-check gives a different
+  answer, the old review stays in the history but no longer applies, so a stale human decision can never
+  silently override new evidence.
+
+The app's **Decisions** tab groups documents by final decision (Approved / Rejected / Needs a person) and
+lists the review history.
+
 ## Extending it
 - **New rule** → add a threshold to `config.py`, a function in `rules.py`, a test in `tests/`.
 - **New document layout** → the AI reader handles it already. Add parser patterns, or run in `ai` mode.

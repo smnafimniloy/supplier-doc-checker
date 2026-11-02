@@ -4,7 +4,8 @@
 person to check**, naming the company rule behind the answer and quoting the document. It is a fixed 7-step
 LangGraph workflow: read PDF → AI extraction (Gemini, Groq as backup) → independent rule-based extraction →
 verify → compare with purchase request → check company rules → decide. The AI only *reads*; every decision
-is plain, tested Python. There is a Streamlit app (steps, quotes, a reviewer form) and a CLI that scores all
+is plain, tested Python. There is a Streamlit app (steps, quotes, and a Decisions tab where a person's review becomes the final
+decision, with who/when/why and full history) and a CLI that scores all
 samples.
 
 **How "never guess" works.**
@@ -14,7 +15,7 @@ samples.
 - An unreadable PDF, or an AI outage, also goes to a person.
 
 **How I tested it.** I worked out the correct answer for all 10 packs by hand first
-(`data/expected-decisions.csv`). The 69 offline tests cover:
+(`data/expected-decisions.csv`). The 75 offline tests cover:
 - all 10 samples end-to-end;
 - every rule at its exact boundary (e.g. +3.00% vs +3.01%);
 - the failure paths: an invented quote, an invented TIN, a misread price, an AI outage, a corrupt PDF.
