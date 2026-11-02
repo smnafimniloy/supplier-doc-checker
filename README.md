@@ -10,6 +10,9 @@ check** — with the rule that decided it and the exact quote from the document.
 **Result on the 10 sample packs: 10 / 10 correct** in hybrid mode (Gemini + parser) and in parser-only mode
 (see [Results](#results)).
 
+**▶ Live demo: https://supplier-doc-checker.streamlit.app/**. Open *Check all 10 samples* → *Run all 10*.
+The first load can take ~30 s if the free host has put the app to sleep.
+
 ---
 
 ## Contents
